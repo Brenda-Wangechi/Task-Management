@@ -3,17 +3,25 @@ from .validation import validate_non_empty_text, validate_due_date
 tasks = []
 
 def add_task():
-    title = None
-    while title is None:
+    # Title: keep prompting until valid
+    while True:
         title_input = input("Task title: ")
-        title = validate_non_empty_text(title_input, "Title")
+        try:
+            title = validate_non_empty_text(title_input, "Title")
+            break
+        except ValueError as e:
+            print(str(e))
 
     description = input("Task description (optional): ").strip()
 
-    due_date = None
-    while due_date is None:
+    # Due date: keep prompting until valid (empty allowed)
+    while True:
         due_date_input = input("Due date (YYYY-MM-DD) or leave blank: ")
-        due_date = validate_due_date(due_date_input)
+        try:
+            due_date = validate_due_date(due_date_input)
+            break
+        except ValueError as e:
+            print(str(e))
 
     task = {
         "id": len(tasks) + 1,
